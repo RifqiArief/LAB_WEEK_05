@@ -32,7 +32,7 @@ class InsertFragment : BaseAuthFragment() {
         val submitButton = view.findViewById<Button>(R.id.submit_button)
 
         submitButton.setOnClickListener {
-            val coffeeTitle = coffeeInput.text.toString().trim()
+            val coffeeTitle = coffeeInput?.text.toString().trim()
 
             if (coffeeTitle.isNotEmpty()) {
                 val coffeeData = hashMapOf("title" to coffeeTitle)
@@ -41,17 +41,17 @@ class InsertFragment : BaseAuthFragment() {
                     .add(coffeeData)
                     .addOnSuccessListener { documentReference ->
                         Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+                        Toast.makeText(requireContext(), "Coffee title added successfully", Toast.LENGTH_LONG).show()
                     }
                     .addOnFailureListener { e ->
                         Log.w("Firestore", "Error adding document", e)
-                        Toast.makeText(requireContext(), "Error adding coffee title", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), "Error adding coffee title: ${e.message}", Toast.LENGTH_LONG).show()
                     }
 
-                coffeeInput.text?.clear()
+                coffeeInput?.text?.clear()
             } else {
                 Toast.makeText(requireContext(), "Coffee Title is Empty", Toast.LENGTH_LONG).show()
             }
         }
     }
 }
-
